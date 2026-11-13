@@ -1,0 +1,623 @@
+<!DOCTYPE html>
+<html lang="en" data-page="landing">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <script>
+    (() => {
+      try {
+        const allowed = ['en', 'fr', 'ar'];
+        const saved = localStorage.getItem('dragonTabLang');
+        const nav = (navigator.language || 'en').slice(0, 2).toLowerCase();
+        const lang = allowed.indexOf(saved) > -1 ? saved : allowed.indexOf(nav) > -1 ? nav : 'en';
+        document.documentElement.lang = lang;
+        document.documentElement.dir = lang === 'ar' ? 'rtl' : 'ltr';
+      } catch (error) { /* storage blocked: keep the English markup */ }
+    })();
+  </script>
+  <title>Dragon Tab — Multi-Instance Android Control &amp; Screen Mirroring for PC</title>
+  <meta name="description" content="Dragon Tab is a Windows app to run multiple Android instances, mirror your phone screens in real time and control everything with a keyboard mapping — all from one powerful, lightweight interface." />
+  <meta name="keywords" content="Dragon Tab, Dragon Tab Android, multi-instance Android, Android multi-instance app, screen mirroring Android, Android mirroring, multiple Android instances, Android instance manager" />
+  <meta name="author" content="Dragon Tab" />
+  <meta name="robots" content="index, follow" />
+  <meta name="theme-color" content="#060608" />
+  <meta name="color-scheme" content="dark" />
+  <!-- Set canonical + og:url to the production domain at deploy time. -->
+  <meta property="og:type" content="website" />
+  <meta property="og:site_name" content="Dragon Tab" />
+  <meta property="og:title" content="Dragon Tab — Multi-Instance. Mirroring. Total Control." />
+  <meta property="og:description" content="Run multiple Android instances, mirror your screens and control everything from one lightweight Windows application." />
+  <meta property="og:image" content="assets/img/og-image.png" />
+  <meta property="og:image:width" content="1200" />
+  <meta property="og:image:height" content="630" />
+  <meta property="og:image:alt" content="Dragon Tab app icon with fire glow on a dark background" />
+  <meta name="twitter:card" content="summary_large_image" />
+  <meta name="twitter:title" content="Dragon Tab — Multi-Instance. Mirroring. Total Control." />
+  <meta name="twitter:description" content="Run multiple Android instances, mirror your screens and control everything from one lightweight Windows application." />
+  <meta name="twitter:image" content="assets/img/og-image.png" />
+
+  <link rel="icon" type="image/svg+xml" href="assets/img/favicon.svg" />
+  <link rel="apple-touch-icon" href="assets/img/logo-256.png" />
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Sora:wght@400;600;700;800&family=Inter:wght@400;500;600;700&family=Cairo:wght@400;600;700;800&display=swap" />
+  <link rel="stylesheet" href="assets/css/styles.css" />
+  <noscript><style>.acc-panel[hidden]{display:block!important}.acc-panel{max-height:none!important;opacity:1!important;padding-bottom:12px}</style></noscript>
+
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "SoftwareApplication",
+    "name": "Dragon Tab",
+    "applicationCategory": "UtilitiesApplication",
+    "operatingSystem": "Windows 10, Windows 11",
+    "description": "Dragon Tab lets you run multiple Android instances, mirror Android screens in real time and control them from one lightweight desktop application.",
+    "downloadUrl": "downloads/Dragon-Tab-Lite-0.3.0-portable.exe",
+    "softwareVersion": "0.3.0",
+    "offers": { "@type": "Offer", "price": "0", "priceCurrency": "USD" },
+    "featureList": [
+      "Multi-instance Android sessions",
+      "Real-time screen mirroring",
+      "PIN-protected keyboard mapping",
+      "Workspaces for sessions and tabs",
+      "Spotify and YouTube media hub",
+      "Built-in guides and planners"
+    ]
+  }
+  </script>
+  <script type="application/ld+json">
+  {
+    "@context": "https://schema.org",
+    "@type": "FAQPage",
+    "mainEntity": [
+      { "@type": "Question", "name": "What is Dragon Tab?", "acceptedAnswer": { "@type": "Answer", "text": "Dragon Tab is a Windows desktop application that runs several Android sessions side by side, mirrors each screen in real time and lets you drive them from a single, lightweight interface." } },
+      { "@type": "Question", "name": "How many Android instances can I run at once?", "acceptedAnswer": { "@type": "Answer", "text": "There is no artificial cap in the app. The real limit is your machine: each instance decodes a live video stream, so RAM, CPU and USB bandwidth decide how far you can go. Most laptops handle three to five instances comfortably." } },
+      { "@type": "Question", "name": "Do I need root access?", "acceptedAnswer": { "@type": "Answer", "text": "No. Dragon Tab uses standard ADB debugging and scrcpy-style video streaming, both of which work on a stock, unrooted Android device." } },
+      { "@type": "Question", "name": "Which Android devices are supported?", "acceptedAnswer": { "@type": "Answer", "text": "Any Android phone or tablet that exposes USB debugging through ADB is supported — wired USB is recommended for latency, and Wi-Fi ADB works on devices that allow it." } },
+      { "@type": "Question", "name": "What is the PIN code for the keyboard mapping?", "acceptedAnswer": { "@type": "Answer", "text": "Keyboard mapping is locked at every startup. Enter your PIN once per launch to unlock shortcuts; the default PIN for new installs is 1234567890 and only a SHA-256 fingerprint of it is stored on disk." } },
+      { "@type": "Question", "name": "Is Dragon Tab free?", "acceptedAnswer": { "@type": "Answer", "text": "The portable build is distributed as a free download. No installer, no background services — one executable you can move between machines." } },
+      { "@type": "Question", "name": "Does it work on Windows 10 and Windows 11?", "acceptedAnswer": { "@type": "Answer", "text": "Yes. Dragon Tab ships as a portable x64 build for Windows 10 and Windows 11 and runs without an installation step." } },
+      { "@type": "Question", "name": "Where is my data stored?", "acceptedAnswer": { "@type": "Answer", "text": "Sessions, workspaces and preferences live in your Windows user profile folder, so updating or moving the executable never wipes them. Nothing is uploaded to a server." } }
+    ]
+  }
+  </script>
+</head>
+<body>
+  <a class="skip-link" href="#main" data-i18n="a11y.skip">Skip to content</a>
+
+  <svg class="sprite" aria-hidden="true" focusable="false" xmlns="http://www.w3.org/2000/svg">
+    <symbol id="i-instances" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="4" width="12" height="9" rx="2"/><path d="M6 16.5h5"/><rect x="16" y="8" width="5.5" height="12" rx="1.6"/><path d="M17 15.5h3.5"/>
+    </symbol>
+    <symbol id="i-mirror" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="6" y="2.8" width="9" height="16" rx="2"/><path d="M9 6h3"/><path d="M14.5 10.5H21"/><path d="M18.5 7.5 21 10.5l-2.5 3"/>
+    </symbol>
+    <symbol id="i-keyboard" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.2" y="6.5" width="19.6" height="11" rx="2.4"/><path d="M6 10h.01M9.5 10h.01M13 10h.01M16.5 10h.01M20 10h.01M6 13.5h.01M18 13.5h.01"/><path d="M9 13.5h6"/>
+    </symbol>
+    <symbol id="i-spaces" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <rect x="2.5" y="3.5" width="8" height="7.5" rx="1.8"/><rect x="13.5" y="3.5" width="8" height="7.5" rx="1.8"/><rect x="2.5" y="13" width="8" height="7.5" rx="1.8"/><rect x="13.5" y="13" width="8" height="7.5" rx="1.8"/>
+    </symbol>
+    <symbol id="i-media" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <circle cx="7" cy="17.5" r="3"/><circle cx="18" cy="15.5" r="3"/><path d="M10 17.5V6.2l11-2v11.3"/>
+    </symbol>
+    <symbol id="i-guide" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4 5.2A2.2 2.2 0 0 1 6.2 3H19v15.5H6.2A2.2 2.2 0 0 0 4 20.7z"/><path d="M4 18.5V21h15"/><path d="M8.5 7.5h6.5M8.5 11h4"/>
+    </symbol>
+    <symbol id="i-shield" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 2.8 4.8 5.6v5.3c0 4.4 3 8.2 7.2 9.6 4.2-1.4 7.2-5.2 7.2-9.6V5.6z"/><path d="m8.9 11.7 2.2 2.2 4-4.3"/>
+    </symbol>
+    <symbol id="i-bolt" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M13.5 2.5 5 13.8h5.2L9.8 21.5 18.8 10h-5.4z"/>
+    </symbol>
+    <symbol id="i-feather" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.7" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M20.5 3.5c-5.6-.6-9.9 1.6-12.4 5.4-2 3-2.3 6.3-1.4 8.6L11 13"/><path d="M6.7 17.5c4.4 1.1 9.3-1 11.2-5.4 1.2-2.8 1.5-5.6 2.6-8.6"/><path d="m8 16 3.5-3.5"/>
+    </symbol>
+    <symbol id="i-download" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M12 3.5v11"/><path d="m7.5 10.5 4.5 4.5 4.5-4.5"/><path d="M4.5 18.5h15"/>
+    </symbol>
+    <symbol id="i-arrow" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.9" stroke-linecap="round" stroke-linejoin="round">
+      <path d="M4.5 12h14"/><path d="m13 6.5 5.5 5.5-5.5 5.5"/>
+    </symbol>
+    <symbol id="i-check" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.2" stroke-linecap="round" stroke-linejoin="round">
+      <path d="m4.5 12.5 5 5 10-11"/>
+    </symbol>
+    <symbol id="i-cross" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M6 6l12 12M18 6 6 18"/>
+    </symbol>
+    <symbol id="i-plus" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round">
+      <path d="M12 5.5v13M5.5 12h13"/>
+    </symbol>
+    <symbol id="i-windows" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M3 5.3 10.6 4v7.3H3zM11.8 3.8 21 2.5v8.8h-9.2zM3 12.7h7.6V20L3 18.7zM11.8 12.7H21v8.8l-9.2-1.3z"/>
+    </symbol>
+    <symbol id="i-android" viewBox="0 0 24 24" fill="currentColor">
+      <path d="M6.4 9.4h11.2a.6.6 0 0 1 .6.6v6.6a2 2 0 0 1-2 2h-.7v2.1a1.3 1.3 0 1 1-2.6 0v-2.1h-2.6v2.1a1.3 1.3 0 1 1-2.6 0v-2.1H8a2 2 0 0 1-2-2V10a.6.6 0 0 1 .4-.6zM3.9 9.9a1.2 1.2 0 0 1 1.2 1.2v4.3a1.2 1.2 0 0 1-2.4 0v-4.3a1.2 1.2 0 0 1 1.2-1.2zm16.2 0a1.2 1.2 0 0 1 1.2 1.2v4.3a1.2 1.2 0 0 1-2.4 0v-4.3a1.2 1.2 0 0 1 1.2-1.2zM8.1 4.1l1 1.9a5.6 5.6 0 0 1 5.8 0l1-1.9a.55.55 0 0 1 .96.53l-1 1.86A5.4 5.4 0 0 1 18.2 8H5.8a5.4 5.4 0 0 1 2.3-1.5l-1-1.87a.55.55 0 1 1 .96-.53zM9.2 6.3a.7.7 0 1 0 0 1.4.7.7 0 0 0 0-1.4zm5.6 0a.7.7 0 1 0 0 1.4.7.7 0 0 0 0-1.4z"/>
+    </symbol>
+  </svg>
+
+  <canvas id="embers" class="embers" aria-hidden="true"></canvas>
+
+  <header class="site-header" id="siteHeader">
+    <div class="container header-inner">
+      <a class="brand" href="#top" aria-label="Dragon Tab — home" data-i18n-aria="common.brandHome">
+        <img src="assets/img/logo-96.png" alt="" class="brand-mark" width="44" height="44" />
+        <span class="brand-text">Dragon<span>Tab</span></span>
+      </a>
+
+      <nav class="nav" id="primaryNav" aria-label="Primary" data-i18n-aria="a11y.primaryNav">
+        <ul class="nav-list">
+          <li><a class="nav-link" href="#top" data-i18n="nav.home">Home</a></li>
+          <li><a class="nav-link" href="#features" data-i18n="nav.features">Features</a></li>
+          <li><a class="nav-link" href="#how" data-i18n="nav.how">How It Works</a></li>
+          <li><a class="nav-link" href="#faq" data-i18n="nav.faq">FAQ</a></li>
+          <li><a class="nav-link nav-link--download" href="#download" data-i18n="nav.download">Download</a></li>
+        </ul>
+        <a class="btn btn--primary btn--sm nav-cta" href="downloads/Dragon-Tab-Lite-0.3.0-portable.exe" download>
+          <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+          <span data-i18n="nav.download">Download</span>
+        </a>
+      </nav>
+
+      <div class="header-tools">
+        <div class="lang-switch" role="group" aria-label="Language" data-i18n-aria="a11y.language">
+          <button class="lang-btn" type="button" data-lang-btn="en" lang="en" aria-pressed="true" aria-label="English">EN</button>
+          <button class="lang-btn" type="button" data-lang-btn="fr" lang="fr" aria-pressed="false" aria-label="Français">FR</button>
+          <button class="lang-btn" type="button" data-lang-btn="ar" lang="ar" aria-pressed="false" aria-label="العربية">ع</button>
+        </div>
+
+        <button class="nav-toggle" id="navToggle" type="button" aria-expanded="false" aria-controls="primaryNav" aria-label="Open menu" data-i18n-aria="a11y.menuOpen">
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+          <span class="nav-toggle-bar"></span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main id="main">
+    <section class="hero" id="top">
+      <div class="hero-bg" aria-hidden="true">
+        <span class="orb orb--1"></span>
+        <span class="orb orb--2"></span>
+        <span class="grid-lines"></span>
+      </div>
+
+      <div class="container hero-inner">
+        <div class="hero-copy">
+          <p class="eyebrow reveal" data-reveal>
+            <span class="eyebrow-dot"></span>
+            <span data-i18n="hero.eyebrow">Built for Android power users</span>
+          </p>
+
+          <h1 class="hero-title reveal" data-reveal>
+            <span class="hero-title-brand">Dragon Tab</span>
+            <span class="hero-title-main" data-i18n-html="hero.title">Multi-Instance.<br />Mirroring.<br /><em>Total Control.</em></span>
+          </h1>
+
+          <p class="hero-sub reveal" data-reveal data-i18n="hero.sub">
+            Run multiple instances, mirror your screens, and manage your Android experience
+            from one powerful application — fast, focused and refreshingly simple.
+          </p>
+
+          <div class="hero-actions reveal" data-reveal>
+            <a class="btn btn--primary btn--lg" href="downloads/Dragon-Tab-Lite-0.3.0-portable.exe" download>
+              <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+              <span data-i18n="hero.ctaDownload">Download Dragon Tab</span>
+            </a>
+            <a class="btn btn--ghost btn--lg" href="#features">
+              <span data-i18n="hero.ctaExplore">Explore Features</span>
+              <svg class="ico" aria-hidden="true"><use href="#i-arrow"/></svg>
+            </a>
+          </div>
+
+          <ul class="trust-pills reveal" data-reveal>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg><span data-i18n="hero.pillFast">Fast</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg><span data-i18n="hero.pillPowerful">Powerful</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-feather"/></svg><span data-i18n="hero.pillSimple">Simple</span></li>
+            <li><svg class="ico" aria-hidden="true"><use href="#i-android"/></svg><span data-i18n="hero.pillAndroid">Built for Android</span></li>
+          </ul>
+        </div>
+
+        <div class="hero-visual reveal" data-reveal>
+          <div class="app-frame app-frame--hero" aria-label="Dragon Tab application preview" data-i18n-aria="a11y.appPreview">
+            <div class="app-titlebar">
+              <span class="dots"><i></i><i></i><i></i></span>
+              <span class="app-title" data-i18n="app.title">Dragon Tab — Sessions</span>
+              <span class="app-tag" data-i18n="app.live">LIVE</span>
+            </div>
+            <div class="app-body">
+              <aside class="app-rail" aria-hidden="true">
+                <span class="rail-btn is-active"></span>
+                <span class="rail-btn"></span>
+                <span class="rail-btn"></span>
+                <span class="rail-btn"></span>
+                <span class="rail-btn rail-btn--pin"></span>
+              </aside>
+              <div class="mirror-grid">
+                <figure class="mirror tilt-a">
+                  <div class="mirror-screen screen--ember">
+                    <span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span>
+                    <div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div>
+                  </div>
+                  <figcaption data-i18n="app.device1">Device 01 · 60 fps</figcaption>
+                </figure>
+                <figure class="mirror tilt-b">
+                  <div class="mirror-screen screen--violet">
+                    <span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span>
+                    <div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div>
+                  </div>
+                  <figcaption data-i18n="app.device2">Device 02 · 60 fps</figcaption>
+                </figure>
+                <figure class="mirror tilt-c">
+                  <div class="mirror-screen screen--cyan">
+                    <span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span>
+                    <div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div>
+                  </div>
+                  <figcaption data-i18n="app.device3">Device 03 · 60 fps</figcaption>
+                </figure>
+              </div>
+            </div>
+          </div>
+
+          <div class="float-chip chip--live" aria-hidden="true">
+            <span class="pulse-dot"></span>
+            <span data-i18n="app.chipLive">3 instances live</span>
+          </div>
+          <div class="float-chip chip--pin" aria-hidden="true">
+            <svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg>
+            <span data-i18n="app.chipPin">PIN protected mapping</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="container">
+        <ul class="stat-strip reveal" data-reveal>
+          <li><strong>3+</strong><span data-i18n="stats.instances">instances at once</span></li>
+          <li><strong>60 fps</strong><span data-i18n="stats.fps">mirroring target</span></li>
+          <li><strong>1 PIN</strong><span data-i18n="stats.pin">per app startup</span></li>
+          <li><strong>0</strong><span data-i18n="stats.installers">installers to run</span></li>
+        </ul>
+      </div>
+    </section>
+
+    <section class="section" id="features">
+      <div class="container">
+        <header class="section-head">
+          <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span><span data-i18n="features.eyebrow">Features</span></p>
+          <h2 class="section-title reveal" data-reveal data-i18n-html="features.title">Everything you need.<br />Nothing you don't.</h2>
+          <p class="section-lead reveal" data-reveal data-i18n="features.lead">
+            Dragon Tab strips your Android workflow down to the essentials and polishes
+            every one of them — no clutter, no bloat, no surprises.
+          </p>
+        </header>
+
+        <div class="feature-grid">
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-instances"/></svg></span>
+            <h3 data-i18n="features.c1Title">Multi-Instance Engine</h3>
+            <p data-i18n="features.c1Text">Open several Android sessions side by side, each with its own device and its own window. Switch, resize and keep them all alive at once.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-mirror"/></svg></span>
+            <h3 data-i18n="features.c2Title">Real-Time Mirroring</h3>
+            <p data-i18n="features.c2Text">Low-latency screen mirroring straight from your device. Touch on the mirror, watch it respond on the phone — instantly.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-keyboard"/></svg></span>
+            <h3 data-i18n="features.c3Title">Smart Keyboard Mapping</h3>
+            <p data-i18n="features.c3Text">Bind mouse and keyboard shortcuts to any mirror. The mapping stays locked behind a PIN at every launch, so nobody touches your setup.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-spaces"/></svg></span>
+            <h3 data-i18n="features.c4Title">Workspaces</h3>
+            <p data-i18n="features.c4Text">Save a full group of sessions — order, layout and all — then restore it in one click. Your routine reopens exactly where you left it.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-media"/></svg></span>
+            <h3 data-i18n="features.c5Title">Media Hub</h3>
+            <p data-i18n="features.c5Text">YouTube and Spotify live inside the app, organised per workspace. Keep the soundtrack next to the instances that need it.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+
+          <article class="card reveal" data-reveal>
+            <span class="card-icon"><svg class="ico" aria-hidden="true"><use href="#i-guide"/></svg></span>
+            <h3 data-i18n="features.c6Title">Built-In Guides</h3>
+            <p data-i18n="features.c6Text">Guides, daily almanax and a dungeon planner ship with the app. The reference you always tabbed away for is one rail click away.</p>
+            <span class="card-glow" aria-hidden="true"></span>
+          </article>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--how" id="how">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span><span data-i18n="how.eyebrow">How It Works</span></p>
+          <h2 class="section-title reveal" data-reveal data-i18n="how.title">Up and running in three steps</h2>
+          <p class="section-lead reveal" data-reveal data-i18n="how.lead">No accounts. No configuration files. No terminal commands.</p>
+        </header>
+
+        <ol class="steps">
+          <li class="step reveal" data-reveal>
+            <span class="step-number">01</span>
+            <h3 data-i18n="how.s1Title">Install</h3>
+            <p data-i18n="how.s1Text">Download the portable build and launch it. There is no installer, no admin prompt and no background service left behind.</p>
+          </li>
+          <li class="step reveal" data-reveal>
+            <span class="step-number">02</span>
+            <h3 data-i18n="how.s2Title">Configure</h3>
+            <p data-i18n="how.s2Text">Plug in your Android device with USB debugging enabled, then pick your workspace, keyboard mapping and unlock PIN.</p>
+          </li>
+          <li class="step reveal" data-reveal>
+            <span class="step-number">03</span>
+            <h3 data-i18n="how.s3Title">Control</h3>
+            <p data-i18n="how.s3Text">Mirror, switch and drive every instance from one window. Restore your saved workspace next time and you are back in seconds.</p>
+          </li>
+        </ol>
+      </div>
+    </section>
+
+    <section class="section" id="why">
+      <div class="container why-inner">
+        <div class="why-copy">
+          <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span><span data-i18n="why.eyebrow">Why Dragon Tab?</span></p>
+          <h2 class="section-title reveal" data-reveal data-i18n="why.title">One window instead of five tabs</h2>
+          <p class="section-lead reveal" data-reveal data-i18n="why.lead">
+            Most multi-instance setups are a pile of tools, cables and half-remembered
+            shortcuts. Dragon Tab folds them into a single, quiet workspace — and keeps
+            your mapping locked when you step away.
+          </p>
+
+          <ul class="benefits reveal" data-reveal>
+            <li><span class="benefit-ico"><svg class="ico" aria-hidden="true"><use href="#i-bolt"/></svg></span><div><strong data-i18n="why.b1Title">Faster to start</strong><p data-i18n="why.b1Text">Restore a workspace and every instance is live in seconds.</p></div></li>
+            <li><span class="benefit-ico"><svg class="ico" aria-hidden="true"><use href="#i-shield"/></svg></span><div><strong data-i18n="why.b2Title">Safer by default</strong><p data-i18n="why.b2Text">Keyboard mapping is PIN-gated at each launch — nothing runs unattended.</p></div></li>
+            <li><span class="benefit-ico"><svg class="ico" aria-hidden="true"><use href="#i-feather"/></svg></span><div><strong data-i18n="why.b3Title">Light on your machine</strong><p data-i18n="why.b3Text">A stripped-down build that opens fast and idles quietly.</p></div></li>
+          </ul>
+        </div>
+
+        <div class="compare reveal" data-reveal>
+          <div class="compare-head">
+            <span class="compare-col" data-i18n="why.compareWant">What you want</span>
+            <span class="compare-col compare-col--old" data-i18n="why.compareOld">Separate tools</span>
+            <span class="compare-col compare-col--new" data-i18n="why.compareNew">Dragon Tab</span>
+          </div>
+          <ul class="compare-rows">
+            <li><span class="compare-col" data-i18n="why.r1">Multiple Android instances</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+            <li><span class="compare-col" data-i18n="why.r2">One live window per device</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+            <li><span class="compare-col" data-i18n="why.r3">Keyboard mapping in one place</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+            <li><span class="compare-col" data-i18n="why.r4">Saved workspaces</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+            <li><span class="compare-col" data-i18n="why.r5">Mapping locked behind a PIN</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+            <li><span class="compare-col" data-i18n="why.r6">Only the features you need</span><span class="compare-col compare-col--old"><svg class="ico ico--x" aria-hidden="true"><use href="#i-cross"/></svg></span><span class="compare-col compare-col--new"><svg class="ico ico--ok" aria-hidden="true"><use href="#i-check"/></svg></span></li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--showcase" id="showcase">
+      <div class="container">
+        <header class="section-head section-head--center">
+          <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span><span data-i18n="showcase.eyebrow">Inside The App</span></p>
+          <h2 class="section-title reveal" data-reveal data-i18n="showcase.title">Mirrors that feel native</h2>
+          <p class="section-lead reveal" data-reveal data-i18n="showcase.lead">
+            Every session is a real device stream, framed in a window that stays out of your way.
+          </p>
+        </header>
+      </div>
+
+      <div class="showcase-wrap reveal" data-reveal>
+        <div class="showcase-glow" aria-hidden="true"></div>
+        <div class="app-frame app-frame--showcase">
+          <div class="app-titlebar">
+            <span class="dots"><i></i><i></i><i></i></span>
+            <span class="app-title" data-i18n="showcase.window">Dragon Tab — Workspace “Night Run”</span>
+            <span class="app-tag" data-i18n="showcase.tag">3 mirrors</span>
+          </div>
+          <div class="app-body">
+            <aside class="app-rail" aria-hidden="true">
+              <span class="rail-btn is-active"></span>
+              <span class="rail-btn"></span>
+              <span class="rail-btn"></span>
+              <span class="rail-btn"></span>
+              <span class="rail-btn rail-btn--pin"></span>
+            </aside>
+            <div class="showcase-main">
+              <div class="mirror-grid mirror-grid--wide">
+                <figure class="mirror">
+                  <div class="mirror-screen screen--ember"><span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span><div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div></div>
+                  <figcaption data-i18n="showcase.cap1">Pixel 7 · USB</figcaption>
+                </figure>
+                <figure class="mirror">
+                  <div class="mirror-screen screen--cyan"><span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span><div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div></div>
+                  <figcaption data-i18n="showcase.cap2">Galaxy S22 · USB</figcaption>
+                </figure>
+                <figure class="mirror">
+                  <div class="mirror-screen screen--violet"><span class="screen-status"><i></i><span data-i18n="showcase.status">Mirroring</span></span><div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div></div>
+                  <figcaption data-i18n="showcase.cap3">Tablet A8 · Wi-Fi</figcaption>
+                </figure>
+                <figure class="mirror mirror--idle">
+                  <div class="mirror-screen"><span class="screen-status screen-status--idle"><i></i><span data-i18n="showcase.statusIdle">Ready</span></span><div class="phone" aria-hidden="true"><span class="phone-top"><i></i><i></i></span><span class="phone-apps"><i></i><i></i><i></i><i></i><i></i><i></i><i></i><i></i></span><span class="phone-dock"><i></i><i></i><i></i><i></i></span></div></div>
+                  <figcaption data-i18n="showcase.add">Add a device</figcaption>
+                </figure>
+              </div>
+              <div class="showcase-bar" aria-hidden="true">
+                <span class="bar-pill"><span aria-hidden="true">⌘&nbsp;</span><span data-i18n="showcase.bar1">Mapping unlocked</span></span>
+                <span class="bar-pill" data-i18n="showcase.bar2">Workspace saved</span>
+                <span class="bar-pill bar-pill--accent" data-i18n="showcase.bar3">60 fps</span>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section section--faq" id="faq">
+      <div class="container faq-inner">
+        <header class="section-head">
+          <p class="eyebrow reveal" data-reveal><span class="eyebrow-dot"></span><span data-i18n="faq.eyebrow">FAQ</span></p>
+          <h2 class="section-title reveal" data-reveal data-i18n="faq.title">Questions, answered</h2>
+          <p class="section-lead reveal" data-reveal data-i18n="faq.lead">Still curious? Everything below is straight from the app's behaviour.</p>
+        </header>
+
+        <div class="accordion" id="faqAccordion">
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a1" id="faq-q1">
+              <span data-i18n="faq.q1">What is Dragon Tab?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a1" role="region" aria-labelledby="faq-q1" hidden>
+              <p data-i18n="faq.a1">Dragon Tab is a Windows desktop application that runs several Android sessions side by side, mirrors each screen in real time and lets you drive them from a single, lightweight interface.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a2" id="faq-q2">
+              <span data-i18n="faq.q2">How many Android instances can I run at once?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a2" role="region" aria-labelledby="faq-q2" hidden>
+              <p data-i18n="faq.a2">There is no artificial cap in the app. The real limit is your machine: each instance decodes a live video stream, so RAM, CPU and USB bandwidth decide how far you can go. Most laptops handle three to five instances comfortably.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a3" id="faq-q3">
+              <span data-i18n="faq.q3">Do I need root access?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a3" role="region" aria-labelledby="faq-q3" hidden>
+              <p data-i18n="faq.a3">No. Dragon Tab works with standard ADB debugging and scrcpy-style video streaming, both of which run on a stock, unrooted Android device.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a4" id="faq-q4">
+              <span data-i18n="faq.q4">Which Android devices are supported?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a4" role="region" aria-labelledby="faq-q4" hidden>
+              <p data-i18n="faq.a4">Any phone or tablet that exposes USB debugging through ADB is supported. A wired USB connection is recommended for latency; wireless ADB works on devices that allow it.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a5" id="faq-q5">
+              <span data-i18n="faq.q5">What is the PIN code for the keyboard mapping?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a5" role="region" aria-labelledby="faq-q5" hidden>
+              <p data-i18n-html="faq.a5">Keyboard mapping is locked at every startup. Enter your PIN once per launch to unlock shortcuts. The default PIN for a new install is <code>1234567890</code>, and only a SHA-256 fingerprint of it is stored on disk — never the PIN itself.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a6" id="faq-q6">
+              <span data-i18n="faq.q6">Is Dragon Tab free?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a6" role="region" aria-labelledby="faq-q6" hidden>
+              <p data-i18n="faq.a6">The portable build is a free download. One executable, no installer and no background services — keep it on a USB stick if you like.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a7" id="faq-q7">
+              <span data-i18n="faq.q7">Does it work on Windows 10 and Windows 11?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a7" role="region" aria-labelledby="faq-q7" hidden>
+              <p data-i18n="faq.a7">Yes. Dragon Tab ships as a portable x64 build for Windows 10 and Windows 11 and runs without an installation step.</p>
+            </div>
+          </div>
+
+          <div class="acc-item reveal" data-reveal>
+            <h3><button class="acc-trigger" type="button" aria-expanded="false" aria-controls="faq-a8" id="faq-q8">
+              <span data-i18n="faq.q8">Where is my data stored?</span>
+              <svg class="ico acc-ico" aria-hidden="true"><use href="#i-plus"/></svg>
+            </button></h3>
+            <div class="acc-panel" id="faq-a8" role="region" aria-labelledby="faq-q8" hidden>
+              <p data-i18n="faq.a8">Sessions, workspaces and preferences are saved in your Windows user profile, so updating or moving the executable never wipes them. Nothing is uploaded to a server.</p>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <section class="section cta" id="download">
+      <div class="container">
+        <div class="cta-card reveal" data-reveal>
+          <span class="cta-orb" aria-hidden="true"></span>
+          <img class="cta-mark" src="assets/img/logo-192.png" alt="" width="88" height="88" loading="lazy" />
+          <h2 data-i18n="cta.title">Ready to experience Dragon Tab?</h2>
+          <p data-i18n="cta.text">Run multiple instances. Mirror your screens. Take control.</p>
+          <a class="btn btn--primary btn--xl" href="downloads/Dragon-Tab-Lite-0.3.0-portable.exe" download>
+            <svg class="ico" aria-hidden="true"><use href="#i-download"/></svg>
+            <span data-i18n="cta.button">Download Dragon Tab</span>
+          </a>
+          <p class="cta-note">
+            <svg class="ico" aria-hidden="true"><use href="#i-android"/></svg>
+            <span data-i18n="cta.note">Windows 10 / 11 · Portable build · No install required</span>
+          </p>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <footer class="site-footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <a class="brand" href="#top" aria-label="Dragon Tab — back to top" data-i18n-aria="common.brandTop">
+          <img src="assets/img/logo-96.png" alt="" class="brand-mark" width="40" height="40" loading="lazy" />
+          <span class="brand-text">Dragon<span>Tab</span></span>
+        </a>
+        <p data-i18n="footer.desc">Multi-instance Android control, real-time mirroring and PIN-protected keyboard mapping — in one portable Windows app.</p>
+        <p class="footer-platform"><svg class="ico" aria-hidden="true"><use href="#i-windows"/></svg><span data-i18n="footer.platform">Windows 10 / 11 · x64</span></p>
+      </div>
+
+      <nav class="footer-col" aria-labelledby="footer-product">
+        <h2 id="footer-product" data-i18n="footer.product">Product</h2>
+        <ul>
+          <li><a href="#features" data-i18n="nav.features">Features</a></li>
+          <li><a href="#how" data-i18n="nav.how">How It Works</a></li>
+          <li><a href="#showcase" data-i18n="footer.showcase">Showcase</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="footer-resources">
+        <h2 id="footer-resources" data-i18n="footer.resources">Resources</h2>
+        <ul>
+          <li><a href="#download" data-i18n="nav.download">Download</a></li>
+          <li><a href="#faq" data-i18n="nav.faq">FAQ</a></li>
+          <li><a href="contact.html" data-i18n="common.contact">Contact</a></li>
+        </ul>
+      </nav>
+
+      <nav class="footer-col" aria-labelledby="footer-legal">
+        <h2 id="footer-legal" data-i18n="footer.legal">Legal</h2>
+        <ul>
+          <li><a href="privacy.html" data-i18n="common.privacy">Privacy Policy</a></li>
+          <li><a href="terms.html" data-i18n="common.terms">Terms of Service</a></li>
+        </ul>
+      </nav>
+    </div>
+
+    <div class="container footer-bottom">
+      <p data-i18n="common.copy">Copyright © 2026 Dragon Tab. All rights reserved.</p>
+      <p class="footer-made" data-i18n="footer.made">Crafted for Android power users.</p>
+    </div>
+  </footer>
+
+  <script src="assets/js/lang-fr.js" defer></script>
+  <script src="assets/js/lang-ar.js" defer></script>
+  <script src="assets/js/i18n.js" defer></script>
+  <script src="assets/js/main.js" defer></script>
+</body>
+</html>

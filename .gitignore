@@ -1,0 +1,13 @@
+# App builds are distributed separately (GitHub Releases), never committed
+downloads/*.exe
+downloads/*.zip
+downloads/*.msi
+
+# Local QA screenshots and traces
+.shots/
+
+# OS / editor noise
+Thumbs.db
+desktop.ini
+.DS_Store
+*.log
